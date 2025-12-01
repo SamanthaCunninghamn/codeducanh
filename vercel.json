@@ -1,9 +1,8 @@
 {
-  "redirects": [
+  "rewrites": [
     {
-      "source": "/",
-      "destination": "/200.html",
-      "permanent": false
+      "source": "/(.*)",
+      "destination": "/200.html"
     }
   ]
 }
